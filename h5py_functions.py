@@ -75,7 +75,7 @@ def load_h5py_arrays(array, indices):
     
     return out
 
-def tryDel(f, string):
+def trydel(f, string):
     
     try:
         del f[string]
