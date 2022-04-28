@@ -64,7 +64,7 @@ def interp2D(z,xnew,ynew):
     
     return out
 
-def extractRegion(array, point, halfSize):
+def extract_region(array, point, halfSize):
        
     a = int(point[0]-halfSize)
     b = int(point[0]+halfSize+1)
