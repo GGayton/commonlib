@@ -1,5 +1,12 @@
 import numpy as np
 
+def approximate_matrix_as_R(Q):
+    
+    u,s,v = np.linalg.svd(Q)
+    R = u@v
+    
+    return R
+
 def create_R(T, order = 'XYZ'):
     
     if order == 'XYZ':
