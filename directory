@@ -1,9 +1,0 @@
-import os
-
-def listdir(folder, condition):
-    out = []
-    for item in os.listdir(folder):
-        if condition(item):
-            out.append(item)
-    
-    return out

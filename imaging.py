@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.signal import convolve2d
 import cv2
+import io
 
 def FT(array, mode):
 

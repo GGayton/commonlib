@@ -1,6 +1,6 @@
 import numpy as np
 
-def lineSegmentIndex(arraySize,start,end,thickness=1):
+def line_segment_index(arraySize,start,end,thickness=1):
         
     x1 = int(start[0])
     x2 = int(end[0])

@@ -1,6 +1,6 @@
 import os
 
-def recursive_file_finder(directory, fileType):
+def recursive_file_finder(directory, filetype):
     
     dirList = os.listdir(directory)
     
@@ -21,15 +21,15 @@ def recursive_file_finder(directory, fileType):
         
         directory = directory[:-cap]
         
-        return recursive_file_finder(directory, fileType)
+        return recursive_file_finder(directory, filetype)
     
-    elif dirList[choice-1][-len(fileType):] == fileType:
+    elif dirList[choice-1][-len(filetype):] == filetype:
         
         return directory + "\\" + dirList[choice-1]
     
     else:
         
-        return recursive_file_finder(directory + "\\" + dirList[choice-1], fileType)
+        return recursive_file_finder(directory + "\\" + dirList[choice-1], filetype)
 
 def recursive_dir_finder(directory):
     
@@ -89,3 +89,17 @@ def list_dir(folder, condition):
             out.append(item)
     
     return out
+
+def recursive_file_list_finder(init_dir, filetype):
+    
+    file_list = []
+    while True:
+        file_list.append(recursive_file_finder(init_dir, filetype))
+        
+        uinput = input('Another? y/n')
+        if uinput == 'y':
+            pass
+        else:
+            break
+    
+    return file_list
