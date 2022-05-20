@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backend_bases import MouseButton
 import numpy as np
 
-from typecasting import rescale_to_uint8
+from commonlib.typecasting import rescale_to_uint8
 
 def plot_coords(out, coords,down_scale):
     for i in range(len(coords)):
