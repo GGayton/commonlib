@@ -1,17 +1,28 @@
+#%%
 import cv2
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backend_bases import MouseButton
 import numpy as np
 
-from commonlib.typecasting import rescale_to_uint8
+from typecasting import rescale_to_uint8
+
+def plot_coords(out, coords,down_scale):
+    for i in range(len(coords)):
+        cv2.circle(out, (coords[i][1], coords[i][0]), 1, (0,0,255),2)
+
+    if len(coords)>=3:
+        lines = np.array(coords, np.int32)//down_scale
+        lines = lines.reshape((-1, 1, 2))
+        lines=np.flip(lines, 2)
+        cv2.polylines(out, [lines], True, (0, 0, 255), 2)
+    cv2.imshow('Cropping tool', out)
 
 #define an area on image using opencv
-def define_area_ocv(image, downScale=6):
+def define_area_ocv(image, down_scale=6):
     # function to display the coordinates of 
     # of the points clicked on the image  
     res = image.shape
-    
 
     u,v = np.meshgrid(np.linspace(1,res[0],res[0]), np.linspace(1,res[1],res[1]), indexing = 'ij')
     vec = np.concatenate((u.astype(np.uint16).reshape(-1,1), v.astype(np.uint16).reshape(-1,1)), axis=1)
@@ -19,25 +30,30 @@ def define_area_ocv(image, downScale=6):
     # of the points clicked on the image  
     coords = []
     def click_event(event, x, y, flags, params): 
-        nonlocal coords
-        # checking for left mouse clicks 
+        nonlocal coords,test_image
+        # checking for left mouse clicks
+        out = test_image.copy()
+
         if event == cv2.EVENT_LBUTTONDOWN: 
-      
-            # displaying the coordinates 
-            # on the Shell 
-            print("X: {}, Y: {}".format(6*y,6*x))
-            coords.append((6*y,6*x))
+            coords.append((down_scale*y,down_scale*x))
+            plot_coords(out,coords,down_scale)
+
+        elif event == cv2.EVENT_RBUTTONDOWN:
+            coords = coords[:-1]
+            plot_coords(out,coords,down_scale)
     
     test_image = rescale_to_uint8(image, max_value=1023)
     
-    width = int(test_image.shape[0]/6)
-    height = int(test_image.shape[1]/6)
+    width = int(test_image.shape[0]/down_scale)
+    height = int(test_image.shape[1]/down_scale)
+    test_image = np.repeat(test_image.reshape(width,height,1),3,2)
+
     test_image = cv2.resize(test_image, (width, height))
     
-    cv2.imshow('Gamma test', test_image)
+    cv2.imshow('Cropping tool', test_image)
     # setting mouse hadler for the image 
     # and calling the click_event() function 
-    cv2.setMouseCallback('Gamma test', click_event) 
+    cv2.setMouseCallback('Cropping tool', click_event) 
     cv2.waitKey(0)  
       
     #closing all open windows  
@@ -165,3 +181,10 @@ def define_centres(image, downScale = 1):
         
     return coords
 
+
+if __name__ == "__main__":
+    import numpy as np
+    image = np.random.rand(1000,1000)*255//1
+    
+    define_area_ocv(image, 1)
+# %%
