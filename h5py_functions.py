@@ -81,5 +81,30 @@ def trydel(f, string):
         del f[string]
     except:
         pass
-            
-            
+
+#%%
+def print_structure(file_string : str):
+
+    def recursive_definer(f, n : int):
+
+        #preamble
+        pre = "-"*n + ">" + " "
+
+        #check for downlevel keys
+        try: lowerkeys = list(f.keys())
+        except: lowerkeys = []
+
+        for key in lowerkeys:
+
+            #print the downlevel
+            print(pre + key)
+            recursive_definer(f[key], n+1)
+
+    with h5py.File(file_string, 'r') as f:
+        recursive_definer(f, 0)
+
+if __name__ == "__main__":
+
+    print_structure(r"D:\OneDrive - The University of Nottingham\Beastwood-Gayton dream team collab 2k22\calib datasets\2022_05_24\inputs\dotsTest.hdf5")
+
+# %%
